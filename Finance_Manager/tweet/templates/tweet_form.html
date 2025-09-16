@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Daddy's Tweets
+{% endblock title %}
+
+{% block content %}
+{# This outer div creates the dark "canvas" for the page content #}
+<div class="bg-gray-900 min-h-screen py-6">
+    <div class="max-w-xl mx-auto px-6">
+        <h1 class="text-center mb-6 text-3xl font-bold text-white">Welcome to Daddy's Tweet Page</h1>
+        
+        {# This is the form container with a slightly lighter dark background #}
+        <div class="bg-gray-800 p-8 rounded-lg shadow-md border border-gray-700">
+            <h2 class="text-2xl font-semibold mb-6 text-white">
+                {% if form.instance.pk %}Edit Tweet{% else %}Create New Tweet{% endif %}
+            </h2>
+    
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+    
+                <div class="space-y-5">
+                    {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">
+                                {{ field.label }}
+                            </label>
+                            
+                            {# This renders the input with the dark classes from forms.py #}
+                            {{ field }} 
+    
+                            {% for error in field.errors %}
+                                <p class="mt-2 text-sm text-red-500">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+    
+                <div class="flex items-center space-x-4 mt-8">
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                        {% if form.instance.pk %}Update Tweet{% else %}Create Tweet{% endif %}
+                    </button>
+            
+                    <a href="{% url 'tweet_list' %}" class="text-white bg-gray-600 border border-gray-500 hover:bg-gray-700 focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-5 py-2.5">Back to Tweet List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+ 
